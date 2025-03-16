@@ -1,9 +1,9 @@
-Library Management System - API 
+Library Management System - API and H2 database
 1. Running the Application
 
 Prerequisites: Java 23+, Maven.
 Steps:
-Clone the repo: git clone https://github.com/your-username/library-management-system.git
+Clone the repo: git clone https://github.com/AyaMakansi/library-management-system.git
 Build the app: mvn clean install
 Run the app: mvn spring-boot:run
 Access the app at http://localhost:8080.
