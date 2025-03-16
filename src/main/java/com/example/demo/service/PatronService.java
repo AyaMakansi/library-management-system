@@ -13,29 +13,31 @@ import com.example.demo.exception.PatronNotFoundException;
 import com.example.demo.model.Patron;
 import com.example.demo.repository.PatronRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PatronService {
     @Autowired
     private PatronRepository _repository;
 
-   
+    @Transactional
  public List<PatronResponseDTO> getAllPatrons() {
         return _repository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     public PatronResponseDTO getPatronById(UUID id) {
        return _repository.findById(id)
             .map(this::convertToDTO)
             .orElseThrow(() -> new PatronNotFoundException(id));
     }
-
+    @Transactional
     public PatronResponseDTO createPatron( PatronRequestDTO PatronRequestDTO) {
         Patron Patron = convertToEntity(PatronRequestDTO);
         return convertToDTO(_repository.save(Patron));
     }
-
+    @Transactional
     public PatronResponseDTO updatePatron(UUID id, PatronRequestDTO PatronRequestDTO) {
         if (!_repository.existsById(id)) {
             throw new RuntimeException("Patron not found");
@@ -44,7 +46,7 @@ public class PatronService {
         Patron.setId(id);
         return convertToDTO(_repository.save(Patron));
     }
-
+    @Transactional
     public boolean deletePatron(UUID id) {
         var Patron = _repository.findById(id);  // Find the Patron by ID
         if (Patron.isPresent()) {  // If the Patron exists

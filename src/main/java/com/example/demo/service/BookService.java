@@ -13,29 +13,31 @@ import com.example.demo.exception.BookNotFoundException;
 import com.example.demo.model.Book;
 import com.example.demo.repository.BookRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class BookService {
     @Autowired
     private BookRepository _repository;
 
-   
+    @Transactional
  public List<BookResponseDTO> getAllBooks() {
         return _repository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     public BookResponseDTO getBookById(UUID id) {
        return _repository.findById(id)
             .map(this::convertToDTO)
             .orElseThrow(() -> new BookNotFoundException(id));
     }
-
+    @Transactional
     public BookResponseDTO createBook( BookRequestDTO bookRequestDTO) {
         Book book = convertToEntity(bookRequestDTO);
         return convertToDTO(_repository.save(book));
     }
-
+    @Transactional
     public BookResponseDTO updateBook(UUID id, BookRequestDTO bookRequestDTO) {
         if (!_repository.existsById(id)) {
             throw new RuntimeException("Book not found");
@@ -44,7 +46,7 @@ public class BookService {
         book.setId(id);
         return convertToDTO(_repository.save(book));
     }
-
+    @Transactional
     public boolean deleteBook(UUID id) {
         var book = _repository.findById(id);  // Find the book by ID
         if (book.isPresent()) {  // If the book exists

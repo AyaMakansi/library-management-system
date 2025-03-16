@@ -25,7 +25,7 @@ public class BorrowingRecordService {
     private BookRepository _booRepo;
     @Autowired
     private PatronRepository _patronRepo;
-
+    @Transactional
     public BorrowingRecordResponseDTO borrowBook(UUID bookId, UUID patronId, BorrowingRecordRequestDTO request) {
 
         var book = _booRepo.findById(bookId)
