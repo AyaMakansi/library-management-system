@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Library Management System - API and H2 database
 1. Running the Application
 
@@ -27,3 +28,6 @@ Borrowing Operations:
 
 POST /api/borrow/{bookId}/patron/{patronId}: Borrow a book.
 PUT /api/return/{bookId}/patron/{patronId}: Return a borrowed book.
+=======
+# library-management-system
+>>>>>>> origin/main
