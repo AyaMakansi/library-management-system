@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.Patron.PatronRequestDTO;
@@ -40,6 +41,7 @@ public class PatronService {
     }
 
     @Transactional
+    @Cacheable(value = "patrons", key = "#id") // Cache patron by ID
     public PatronResponseDTO getPatronById(UUID id) {
         logger.info("Fetching patron with ID: {}", id);
         return _repository.findById(id)

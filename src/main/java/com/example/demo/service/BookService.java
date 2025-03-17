@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.Book.BookRequestDTO;
@@ -40,6 +41,7 @@ public class BookService {
     }
 
     @Transactional
+    @Cacheable(value = "books", key = "#id") // Cache book by ID
     public BookResponseDTO getBookById(UUID id) {
         logger.info("Fetching book with ID: {}", id);
         return _repository.findById(id)
