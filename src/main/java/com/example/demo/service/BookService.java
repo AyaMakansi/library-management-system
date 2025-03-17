@@ -25,7 +25,7 @@ public class BookService {
     @Autowired
     private BookRepository _repository;
 
-    @Transactional
+    
     public List<BookResponseDTO> getAllBooks() {
         logger.info("Fetching all books");
         long start = System.currentTimeMillis();
@@ -40,7 +40,7 @@ public class BookService {
         return books;
     }
 
-    @Transactional
+    
     @Cacheable(value = "books", key = "#id") // Cache book by ID
     public BookResponseDTO getBookById(UUID id) {
         logger.info("Fetching book with ID: {}", id);

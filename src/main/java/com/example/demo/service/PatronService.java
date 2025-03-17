@@ -25,7 +25,7 @@ public class PatronService {
     @Autowired
     private PatronRepository _repository;
 
-    @Transactional
+    
     public List<PatronResponseDTO> getAllPatrons() {
         logger.info("Fetching all patrons");
         long start = System.currentTimeMillis();
@@ -40,7 +40,7 @@ public class PatronService {
         return patrons;
     }
 
-    @Transactional
+    
     @Cacheable(value = "patrons", key = "#id") // Cache patron by ID
     public PatronResponseDTO getPatronById(UUID id) {
         logger.info("Fetching patron with ID: {}", id);
