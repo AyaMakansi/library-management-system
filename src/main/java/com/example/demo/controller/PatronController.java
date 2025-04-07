@@ -3,9 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.UUID;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,61 +17,67 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Patron.PatronRequestDTO;
 import com.example.demo.dto.Patron.PatronResponseDTO;
-import com.example.demo.service.PatronService;
+import com.example.demo.service.Patrons.PatronService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @RestController
+@Tag(name = "Patron")
 @RequestMapping("/api/patrons")
 public class PatronController {
 
-    @Autowired
-    private final PatronService PatronService;
+    private PatronService patronService;
 
-    public PatronController(PatronService PatronService) {
-        this.PatronService = PatronService;
-    }
 
+    @Operation(summary = "Get all patrons", description = "Fetches a list of all patrons")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved patrons", content = @Content(schema = @Schema(implementation = PatronResponseDTO.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "204", description = "No patrons found")
+    })
     @GetMapping
-    public List<PatronResponseDTO> getAllPatrons() {
-        return PatronService.getAllPatrons();
+    public ResponseEntity<List<PatronResponseDTO>> getAllPatrons() {
+        var patrons = patronService.getAllPatrons();
+        return patrons.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(patrons);
     }
 
+    //@Cacheable
+    @Operation(summary = "Get patron by ID", description = "Fetches a patron's details by their unique ID")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved patron", content = @Content(schema = @Schema(implementation = PatronResponseDTO.class), mediaType = "application/json"))
     @GetMapping("/{id}")
     public ResponseEntity<PatronResponseDTO> getPatronById(@PathVariable UUID id) {
-        var Patron = PatronService.getPatronById(id);
-        if (Patron == null) {
-            return ResponseEntity.notFound().build(); // Corrected condition
-        }
-        return ResponseEntity.ok(Patron);
-
+        return ResponseEntity.ok(patronService.getPatronById(id));
     }
 
+    @Operation(summary = "Create a new patron", description = "Creates a new patron based on the provided request data")
+    @ApiResponse(responseCode = "201", description = "Successfully created patron", content = @Content(schema = @Schema(implementation = PatronResponseDTO.class), mediaType = "application/json"))
     @PostMapping
-    public ResponseEntity<PatronResponseDTO> createPatron(@RequestBody @Valid PatronRequestDTO request) {
-        var createdPatron = PatronService.createPatron(request);
-        return new ResponseEntity<>(createdPatron, HttpStatus.CREATED);
+    public ResponseEntity<PatronResponseDTO> createPatron(@Valid @RequestBody PatronRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(patronService.createPatron(request));
     }
 
+    @Operation(summary = "Update patron by ID", description = "Updates an existing patron's details based on the provided request data")
+    @ApiResponse(responseCode = "200", description = "Successfully updated patron", content = @Content(schema = @Schema(implementation = PatronResponseDTO.class), mediaType = "application/json"))
     @PutMapping("/{id}")
     public ResponseEntity<PatronResponseDTO> updatePatron(@PathVariable UUID id,
             @Valid @RequestBody PatronRequestDTO request) {
-        try {
-            var updatedPatron = PatronService.updatePatron(id, request);
-            return new ResponseEntity<>(updatedPatron, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(patronService.updatePatron(id, request));
     }
 
+    @Operation(summary = "Delete patron by ID", description = "Deletes a patron by their unique ID")
+    @ApiResponse(responseCode = "204", description = "Successfully deleted patron")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePatron(@PathVariable UUID id) {
-
-        var isDeleted = PatronService.deletePatron(id);
-        // If the Patron is successfully deleted, return 200 OK with a success message.
-        if (isDeleted) {
-            return ResponseEntity.ok("Patron successfully deleted.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Patron not found with ID: " + id);
-        }
+    public ResponseEntity<Void> deletePatron(@PathVariable UUID id) {
+        patronService.deletePatron(id);
+        return ResponseEntity.noContent().build();
     }
+
+    
 }

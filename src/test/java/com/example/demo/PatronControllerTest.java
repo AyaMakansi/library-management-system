@@ -22,8 +22,7 @@ import org.springframework.web.client.RestClientException;
 
 import com.example.demo.dto.Patron.PatronRequestDTO;
 import com.example.demo.dto.Patron.PatronResponseDTO;
-
-import com.example.demo.service.PatronService;
+import com.example.demo.service.Patrons.PatronServiceImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +37,7 @@ public class PatronControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private PatronService patronService;
+    private PatronServiceImpl patronService;
 
     private String getBaseUrl() {
         return "http://localhost:" + port + "/api/patrons";

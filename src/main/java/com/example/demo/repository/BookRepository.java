@@ -10,4 +10,5 @@ import com.example.demo.model.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book,UUID>{
 
+    boolean existsByIsbn(String isbn);
 }

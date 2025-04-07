@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
-
 import com.example.demo.dto.Book.BookRequestDTO;
 import com.example.demo.dto.Book.BookResponseDTO;
 
@@ -30,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(locations = "classpath:application-test.properties")
+
 public class BookControllerTest {
 
     @LocalServerPort
@@ -37,6 +37,7 @@ public class BookControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
 
     private String getBaseUrl() {
         return "http://localhost:" + port + "/api/books";
@@ -46,6 +47,8 @@ public class BookControllerTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
+
+
 
     /**
      * Test Create Book (POST)

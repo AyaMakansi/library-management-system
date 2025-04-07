@@ -21,4 +21,5 @@ public class BorrowingRecordResponseDTO {
     private String BookName;
     private LocalDate borrowDate;
     private LocalDate returnDate;
+    private Boolean isAvailable;
 }

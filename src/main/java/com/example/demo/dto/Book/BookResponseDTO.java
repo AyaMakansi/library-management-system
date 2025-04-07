@@ -1,6 +1,5 @@
 package com.example.demo.dto.Book;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ public class BookResponseDTO {
     private UUID Id; 
     private String Title;
     private String Author;
-    private LocalDate  PublicationYear;
+    private Integer  PublicationYear;
     private String ISBN;
   
     

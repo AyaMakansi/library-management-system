@@ -1,11 +1,13 @@
-package com.example.demo.service;
+package com.example.demo.Validation.Borrowing;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.validation.Constraint;
+import jakarta.validation.Constraint;
+
+
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

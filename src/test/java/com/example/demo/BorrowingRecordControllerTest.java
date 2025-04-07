@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import com.example.demo.dto.BorrowingRecord.BorrowingRecordRequestDTO;
+import com.example.demo.dto.BorrowingRecord.ReturnRequestDTO;
 import com.example.demo.dto.BorrowingRecord.BorrowingRecordResponseDTO;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,15 +46,15 @@ public class BorrowingRecordControllerTest {
         UUID bookId = UUID.randomUUID();
         UUID patronId = UUID.randomUUID();
         
-        BorrowingRecordRequestDTO request = new BorrowingRecordRequestDTO();
-        request.setBorrowDate(LocalDate.now());
+        ReturnRequestDTO request = new ReturnRequestDTO();
+        //request.setBorrowDate(LocalDate.now());
         request.setReturnDate(LocalDate.now().plusWeeks(2));  // Example return date
     
         // Set up mock service behavior
         BorrowingRecordResponseDTO expectedResponse = new BorrowingRecordResponseDTO();
         expectedResponse.setBookId(bookId);
         expectedResponse.setPatronId(patronId);
-        expectedResponse.setBorrowDate(request.getBorrowDate());
+      //  expectedResponse.setBorrowDate(request.getBorrowDate());
         expectedResponse.setReturnDate(request.getReturnDate());
     
         // Perform the POST request using TestRestTemplate
@@ -70,7 +70,7 @@ public class BorrowingRecordControllerTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getBookId()).isEqualTo(bookId);
         assertThat(response.getBody().getPatronId()).isEqualTo(patronId);
-        assertThat(response.getBody().getBorrowDate()).isEqualTo(request.getBorrowDate());
+       // assertThat(response.getBody().getBorrowDate()).isEqualTo(request.getBorrowDate());
         assertThat(response.getBody().getReturnDate()).isEqualTo(request.getReturnDate());
     }
     
@@ -80,7 +80,7 @@ public class BorrowingRecordControllerTest {
         UUID patronId = UUID.randomUUID();
         
         // Prepare the mock request for return
-        BorrowingRecordRequestDTO request = new BorrowingRecordRequestDTO();
+        ReturnRequestDTO request = new ReturnRequestDTO();
         request.setReturnDate(LocalDate.now());
     
         // Prepare the expected response for a successful return
@@ -92,7 +92,7 @@ public class BorrowingRecordControllerTest {
         // Prepare the HttpEntity with request body and headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<BorrowingRecordRequestDTO> requestEntity = new HttpEntity<>(request, headers);
+        HttpEntity<ReturnRequestDTO> requestEntity = new HttpEntity<>(request, headers);
 
         // Perform the PUT request using TestRestTemplate (HTTP exchange)
         ResponseEntity<BorrowingRecordResponseDTO> response = restTemplate.exchange(
