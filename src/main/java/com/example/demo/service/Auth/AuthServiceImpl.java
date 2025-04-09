@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtUtil jwtUtil;
     private final UserMapper mapper;
- private final ApplicationEventPublisher publisher;
+    private final ApplicationEventPublisher publisher;
 
     /**
      * Registers a new user.

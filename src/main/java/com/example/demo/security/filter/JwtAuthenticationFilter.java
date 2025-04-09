@@ -40,7 +40,7 @@ private final UserRepository userRepository;
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), null, List.of(new SimpleGrantedAuthority(user.getRole())));
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), null, List.of(new SimpleGrantedAuthority("ROLE_"+user.getRole())));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

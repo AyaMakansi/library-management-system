@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class BookController {
 
     private BookService BookService;
 
+   
     @Operation(summary = "Get all Books", description = "Fetches a list of all Books")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved Books", content = @Content(schema = @Schema(implementation = BookResponseDTO.class), mediaType = "application/json")),
@@ -47,6 +49,7 @@ public class BookController {
         return Books.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(Books);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
    // @Cacheable
     @Operation(summary = "Get Book by ID", description = "Fetches a Book's details by their unique ID")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved Book", content = @Content(schema = @Schema(implementation = BookResponseDTO.class), mediaType = "application/json"))

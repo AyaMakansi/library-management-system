@@ -82,12 +82,5 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(messages, LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-            List.of("An error occurred: " + ex.getMessage()), 
-            LocalDateTime.now()
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-    }
+  
 }
